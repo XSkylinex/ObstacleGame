@@ -10,6 +10,7 @@ import com.obstacle.alex.config.GameConfig;
 import com.obstacle.alex.entity.Player;
 import com.obstacle.alex.util.GdxUtils;
 import com.obstacle.alex.util.ViewportUtils;
+import com.obstacle.alex.util.debug.DebugCameraController;
 
 public class GameScreen implements Screen {
 
@@ -20,6 +21,8 @@ public class GameScreen implements Screen {
     private static final Logger log = new Logger(GameScreen.class.getName(),Logger.DEBUG);
 
     private Player player;
+
+    private DebugCameraController debugCameraController;
 
     @Override
     public void show () { // show it like create initialize game and load resources
@@ -32,10 +35,16 @@ public class GameScreen implements Screen {
         float startPlayerY = 1;
 
         player.setPosition(startPlayerX,startPlayerY);
+
+        this.debugCameraController = new DebugCameraController();
+        this.debugCameraController.setStartPosition(GameConfig.WORLD_CENTER_X,GameConfig.WORLD_CENTER_Y);
     }
 
     @Override
     public void render (float delta) {
+
+        this.debugCameraController.handleDebugInput(delta);
+        debugCameraController.applyTo(camera);
         update(delta);
 
         GdxUtils.clearScreen();
