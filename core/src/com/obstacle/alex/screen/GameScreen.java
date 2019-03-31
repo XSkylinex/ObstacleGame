@@ -1,12 +1,17 @@
 package com.obstacle.alex.screen;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Logger;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.obstacle.alex.assets.AssetPaths;
 import com.obstacle.alex.config.GameConfig;
 import com.obstacle.alex.entity.ObstacleEnemy;
 import com.obstacle.alex.entity.Player;
@@ -30,7 +35,14 @@ public class GameScreen implements Screen {
 
     private DebugCameraController debugCameraController;
 
-    private Boolean alive = true;
+    private OrthographicCamera hudCamera;
+    private Viewport hudViewport;
+
+    private SpriteBatch batch;
+    private final GlyphLayout layout = new GlyphLayout();
+    private BitmapFont font;
+
+    private int lives = GameConfig.LIVE_START;
 
     @Override
     public void show () { // show it like create initialize game and load resources
@@ -46,6 +58,12 @@ public class GameScreen implements Screen {
 
         this.debugCameraController = new DebugCameraController();
         this.debugCameraController.setStartPosition(GameConfig.WORLD_CENTER_X,GameConfig.WORLD_CENTER_Y);
+
+
+        this.hudCamera = new OrthographicCamera();
+        this.hudViewport = new FillViewport(GameConfig.HUD_WIDTH,GameConfig.HUD_HEIGHT,hudCamera);
+        this.batch = new SpriteBatch();
+        font = new BitmapFont(Gdx.files.internal(AssetPaths.UI_FONT));
     }
 
     @Override
@@ -53,11 +71,10 @@ public class GameScreen implements Screen {
 
         this.debugCameraController.handleDebugInput(delta);
         debugCameraController.applyTo(camera);
-        if (alive){
-            update(delta);
-        }
+        update(delta);
 
         GdxUtils.clearScreen();
+        renderUI();
 
         renderDebug();
     }
@@ -65,11 +82,15 @@ public class GameScreen implements Screen {
     @Override
     public void dispose () {
         renderer.dispose();
+        batch.dispose();
+        font.dispose();
+
     }
 
     @Override
     public void resize(int width, int height) {
         viewport.update(width,height,true);
+        this.hudViewport.update(width,height,true);
         ViewportUtils.debugPixelPerUnit(viewport);
     }
 
@@ -110,7 +131,7 @@ public class GameScreen implements Screen {
         updateEnemyObstacles(delta);
 
         if(isPlayerColliadingTureOrFalse()){
-            this.alive = false;
+            this.lives--;
         }
     }
 
@@ -171,6 +192,16 @@ public class GameScreen implements Screen {
         return false;
     }
 
+    private void renderUI(){
+        this.batch.setProjectionMatrix(hudCamera.combined);
+        batch.begin();
 
+        String livesFont = "LIVES: " + lives;
+        layout.setText(font,livesFont);
+
+        font.draw(batch,livesFont,20,GameConfig.HUD_HEIGHT - layout.height);
+
+        batch.end();
+    }
 
 }
