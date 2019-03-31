@@ -55,4 +55,7 @@ public class Player {
         updateBounds();
     }
 
+    public float getWidth() {
+        return SIZE;
+    }
 }

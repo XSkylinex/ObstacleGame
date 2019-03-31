@@ -3,6 +3,7 @@ package com.obstacle.alex.screen;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Logger;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -93,11 +94,28 @@ public class GameScreen implements Screen {
 
 
     private void update(float delta){
-        updatePlyer();
+        updatePayer();
     }
 
-    private void updatePlyer(){
-        log.debug("PlayerX= " +player.getX() +" PlayerY= " + player.getY());
+    private void updatePayer(){
         player.update();
+        // block player from leave the world
+        stopPlayerLeaveWorld();
+
+
+    }
+
+    private void stopPlayerLeaveWorld(){
+        float playerX = MathUtils.clamp(player.getX(),
+                player.getWidth()/2f,
+                GameConfig.WORLD_WIDTH - player.getWidth()/2f );
+
+        if(playerX < player.getWidth()/2f){
+            playerX = player.getWidth()/2f;
+        }else if(playerX > GameConfig.WORLD_WIDTH - player.getWidth()/2f){
+            playerX = GameConfig.WORLD_WIDTH - player.getWidth()/2f;
+        }
+
+        player.setPosition(playerX,player.getY());
     }
 }

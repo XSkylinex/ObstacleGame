@@ -71,7 +71,7 @@ public class DebugCameraConfig {
     private FileHandle fileHandle;
 
     public DebugCameraConfig() {
-        loadFromJsonFile();
+        startConfig();
     }
 
 
@@ -80,9 +80,10 @@ public class DebugCameraConfig {
 
 
         if(fileHandle.exists()){
-
+            loadFromJsonFile();
         }else{
             log.info("file not exist" + FILE_CONFIG_PATH);
+            setupConfig();
         }
 
 
