@@ -8,10 +8,13 @@ import com.badlogic.gdx.utils.Logger;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.obstacle.alex.config.GameConfig;
+import com.obstacle.alex.entity.ObstacleEnemy;
 import com.obstacle.alex.entity.Player;
 import com.obstacle.alex.util.GdxUtils;
 import com.obstacle.alex.util.ViewportUtils;
 import com.obstacle.alex.util.debug.DebugCameraController;
+
+import java.util.ArrayList;
 
 public class GameScreen implements Screen {
 
@@ -22,6 +25,8 @@ public class GameScreen implements Screen {
     private static final Logger log = new Logger(GameScreen.class.getName(),Logger.DEBUG);
 
     private Player player;
+    private ArrayList<ObstacleEnemy> obstacleEnemies = new ArrayList<ObstacleEnemy>();
+    private float obstacleEnemyTime;
 
     private DebugCameraController debugCameraController;
 
@@ -81,6 +86,9 @@ public class GameScreen implements Screen {
 
     private void drewDebug(){
         player.drawDebug(renderer);
+        for (ObstacleEnemy obstacleEnemy: obstacleEnemies) {
+            obstacleEnemy.drawDebug(renderer);
+        }
     }
 
 
@@ -95,6 +103,7 @@ public class GameScreen implements Screen {
 
     private void update(float delta){
         updatePayer();
+        updateEnemyObstacles(delta);
     }
 
     private void updatePayer(){
@@ -106,9 +115,10 @@ public class GameScreen implements Screen {
     }
 
     private void stopPlayerLeaveWorld(){
-        float playerX = MathUtils.clamp(player.getX(),
-                player.getWidth()/2f,
-                GameConfig.WORLD_WIDTH - player.getWidth()/2f );
+        float playerX = MathUtils.clamp(
+                player.getX(), // value
+                player.getWidth()/2f, // less to min
+                GameConfig.WORLD_WIDTH - player.getWidth()/2f ); // more the maximum
 
         if(playerX < player.getWidth()/2f){
             playerX = player.getWidth()/2f;
@@ -118,4 +128,29 @@ public class GameScreen implements Screen {
 
         player.setPosition(playerX,player.getY());
     }
+
+
+    private void updateEnemyObstacles(float delta){
+        for(ObstacleEnemy obstacleEnemies : obstacleEnemies){
+            obstacleEnemies.update();
+        }
+        createNewEnemyObstacles(delta);
+    }
+
+    private void createNewEnemyObstacles(float delta){
+        this.obstacleEnemyTime +=delta;
+        if(this.obstacleEnemyTime > GameConfig.ENEMY_SPAWN_TIME){
+            float min = 0f;
+            float max = GameConfig.WORLD_WIDTH;
+            float enemyObstacleX = MathUtils.random(min,max);
+            float enemyObstacleY = GameConfig.WORLD_HEIGHT;
+
+            ObstacleEnemy obstacleEnemy = new ObstacleEnemy();
+            obstacleEnemy.setPosition(enemyObstacleX,enemyObstacleY);
+
+            this.obstacleEnemies.add(obstacleEnemy);
+            this.obstacleEnemyTime = 0f;
+        }
+    }
+
 }

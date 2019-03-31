@@ -12,6 +12,10 @@ public class GameConfig {
 
 
 
+    public static final float ENEMY_SPAWN_TIME = 0.25f; //world units
+
+
+
 
 
 
