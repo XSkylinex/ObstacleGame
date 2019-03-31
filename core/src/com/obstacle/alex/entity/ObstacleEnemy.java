@@ -1,9 +1,7 @@
 package com.obstacle.alex.entity;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Intersector;
 
 public class ObstacleEnemy extends GameObjectBase{
     private static final float BOUNDS_RADIUS = 0.4f;
@@ -16,12 +14,18 @@ public class ObstacleEnemy extends GameObjectBase{
         super(BOUNDS_RADIUS);
     }
 
-    
+
     public void update(){
         setY(getY()-ySpeed);
     }
 
     public float getWidth() {
         return SIZE;
+    }
+
+    public Boolean isPlayerColliding(Player player){
+        Circle circle = player.getBounds();
+        //check if playerbounds overlap
+        return Intersector.overlaps(player.getBounds(),this.getBounds());
     }
 }

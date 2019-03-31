@@ -30,6 +30,8 @@ public class GameScreen implements Screen {
 
     private DebugCameraController debugCameraController;
 
+    private Boolean alive = true;
+
     @Override
     public void show () { // show it like create initialize game and load resources
         this.camera = new OrthographicCamera();
@@ -51,7 +53,9 @@ public class GameScreen implements Screen {
 
         this.debugCameraController.handleDebugInput(delta);
         debugCameraController.applyTo(camera);
-        update(delta);
+        if (alive){
+            update(delta);
+        }
 
         GdxUtils.clearScreen();
 
@@ -104,6 +108,10 @@ public class GameScreen implements Screen {
     private void update(float delta){
         updatePayer();
         updateEnemyObstacles(delta);
+
+        if(isPlayerColliadingTureOrFalse()){
+            this.alive = false;
+        }
     }
 
     private void updatePayer(){
@@ -152,5 +160,17 @@ public class GameScreen implements Screen {
             this.obstacleEnemyTime = 0f;
         }
     }
+
+    private Boolean isPlayerColliadingTureOrFalse(){
+
+        for(ObstacleEnemy obstacleEnemy : obstacleEnemies){
+            if(obstacleEnemy.isPlayerColliding(player)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 
 }
