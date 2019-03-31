@@ -44,6 +44,9 @@ public class GameScreen implements Screen {
 
     private int lives = GameConfig.LIVE_START;
 
+    private float scoreTimer;
+    private int score;
+
     @Override
     public void show () { // show it like create initialize game and load resources
         this.camera = new OrthographicCamera();
@@ -133,6 +136,8 @@ public class GameScreen implements Screen {
         if(isPlayerColliadingTureOrFalse()){
             this.lives--;
         }
+
+        updateScore(delta);
     }
 
     private void updatePayer(){
@@ -201,7 +206,23 @@ public class GameScreen implements Screen {
 
         font.draw(batch,livesFont,20,GameConfig.HUD_HEIGHT - layout.height);
 
+        String scoreFont = "Points: "+score;
+        layout.setText(font,scoreFont);
+        font.draw(batch,scoreFont,
+                GameConfig.HUD_WIDTH - layout.width - 20,
+                GameConfig.HUD_HEIGHT - layout.height);
+
+
         batch.end();
+    }
+
+    private void updateScore(float delta){
+        this.scoreTimer += delta;
+
+        if(scoreTimer >= GameConfig.SCORE_MAX_TIME){
+            score+=MathUtils.random(1,5);
+            scoreTimer = 0.0f;
+        }
     }
 
 }
