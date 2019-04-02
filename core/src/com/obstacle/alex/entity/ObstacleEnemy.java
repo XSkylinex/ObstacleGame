@@ -28,7 +28,7 @@ public class ObstacleEnemy extends GameObjectBase{
     public boolean isPlayerColliding(Player player){
         Circle circle = player.getBounds();
         //check if playerbounds overlap
-        boolean overlaps = Intersector.overlaps(player.getBounds(),this.getBounds());
+        boolean overlaps = Intersector.overlaps(circle,this.getBounds());
 
         this.hits = overlaps;
 
