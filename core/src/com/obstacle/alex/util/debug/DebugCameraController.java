@@ -2,16 +2,14 @@ package com.obstacle.alex.util.debug;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Logger;
-import com.obstacle.alex.screen.GameScreen;
 
 public class DebugCameraController {
 
-    private static final Logger log = new Logger(GameScreen.class.getName(),Logger.DEBUG);
+    private static final Logger log = new Logger(DebugCameraController.class.getName(),Logger.DEBUG);
 
     private DebugCameraConfig debugCameraConfig;
 

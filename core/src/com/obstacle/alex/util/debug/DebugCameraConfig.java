@@ -6,13 +6,10 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.Logger;
-import com.obstacle.alex.screen.GameScreen;
-
-import static jdk.nashorn.internal.runtime.regexp.joni.Config.log;
 
 public class DebugCameraConfig {
 
-    private static final Logger log = new Logger(GameScreen.class.getName(),Logger.DEBUG);
+    private static final Logger log = new Logger(DebugCameraConfig.class.getName(),Logger.DEBUG);
 
     private static final int LEFT_KEY = Input.Keys.A;
     private static final int RIGHT_KEY = Input.Keys.D;
