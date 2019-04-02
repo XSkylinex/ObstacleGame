@@ -49,6 +49,8 @@ public class GameScreen implements Screen {
 
     private int playerDisplayScore;
 
+    private DifficultyLevel difficultyLevel = DifficultyLevel.MEDIUM;
+
     @Override
     public void show () { // show it like create initialize game and load resources
         this.camera = new OrthographicCamera();
@@ -187,6 +189,9 @@ public class GameScreen implements Screen {
             float enemyObstacleY = GameConfig.WORLD_HEIGHT;
 
             ObstacleEnemy obstacleEnemy = new ObstacleEnemy();
+
+            obstacleEnemy.setYenemySpeed(difficultyLevel.getEnemySpeed());
+
             obstacleEnemy.setPosition(enemyObstacleX,enemyObstacleY);
 
             this.obstacleEnemies.add(obstacleEnemy);
