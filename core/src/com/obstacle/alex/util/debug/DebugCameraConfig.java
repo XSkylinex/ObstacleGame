@@ -164,28 +164,28 @@ public class DebugCameraConfig {
     }
 
 
-    public Boolean leftKey(){
+    public boolean leftKey(){
         return Gdx.input.isKeyPressed(leftKey);
     }
-    public Boolean rightKey(){
+    public boolean rightKey(){
         return Gdx.input.isKeyPressed(rightKey);
     }
-    public Boolean upKey(){
+    public boolean upKey(){
         return Gdx.input.isKeyPressed(upKey);
     }
-    public Boolean downKey(){
+    public boolean downKey(){
         return Gdx.input.isKeyPressed(downKey);
     }
-    public Boolean zoomInKey(){
+    public boolean zoomInKey(){
         return Gdx.input.isKeyPressed(zoomInKey);
     }
-    public Boolean zoomOutKey(){
+    public boolean zoomOutKey(){
         return Gdx.input.isKeyPressed(zoomOutKey);
     }
-    public Boolean resetKey(){
+    public boolean resetKey(){
         return Gdx.input.isKeyPressed(resetKey);
     }
-    public Boolean logKey(){
+    public boolean logKey(){
         return Gdx.input.isKeyPressed(logKey);
     }
 

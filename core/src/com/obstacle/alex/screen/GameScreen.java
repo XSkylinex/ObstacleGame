@@ -47,6 +47,8 @@ public class GameScreen implements Screen {
     private float scoreTimer;
     private int score;
 
+    private int playerDisplayScore;
+
     @Override
     public void show () { // show it like create initialize game and load resources
         this.camera = new OrthographicCamera();
@@ -130,8 +132,13 @@ public class GameScreen implements Screen {
 
 
     private void update(float delta){
+        if(isGameOver()){
+
+        }
         updatePayer();
         updateEnemyObstacles(delta);
+        updateScore(delta);
+        updatePlayerDisplayScore(delta);
 
         if(isPlayerColliadingTureOrFalse()){
             this.lives--;
@@ -190,7 +197,7 @@ public class GameScreen implements Screen {
     private Boolean isPlayerColliadingTureOrFalse(){
 
         for(ObstacleEnemy obstacleEnemy : obstacleEnemies){
-            if(obstacleEnemy.isPlayerColliding(player)){
+            if(obstacleEnemy.isNotHits() && obstacleEnemy.isPlayerColliding(player)){
                 return true;
             }
         }
@@ -206,7 +213,7 @@ public class GameScreen implements Screen {
 
         font.draw(batch,livesFont,20,GameConfig.HUD_HEIGHT - layout.height);
 
-        String scoreFont = "Points: "+score;
+        String scoreFont = "Points: "+playerDisplayScore;
         layout.setText(font,scoreFont);
         font.draw(batch,scoreFont,
                 GameConfig.HUD_WIDTH - layout.width - 20,
@@ -223,6 +230,19 @@ public class GameScreen implements Screen {
             score+=MathUtils.random(1,5);
             scoreTimer = 0.0f;
         }
+    }
+
+    private void updatePlayerDisplayScore(float delta){
+        if(playerDisplayScore < score){
+            playerDisplayScore = Math.min(
+                    score,
+                    playerDisplayScore+(int)(60*delta)
+            );
+        }
+    }
+
+    private Boolean isGameOver(){
+        return lives<=0;
     }
 
 }

@@ -8,6 +8,7 @@ public class ObstacleEnemy extends GameObjectBase{
     private static final float SIZE = BOUNDS_RADIUS*2;
 
     private float ySpeed = 0.1f;
+    private boolean hits;
 
 
     public ObstacleEnemy(){
@@ -23,9 +24,19 @@ public class ObstacleEnemy extends GameObjectBase{
         return SIZE;
     }
 
-    public Boolean isPlayerColliding(Player player){
+    public boolean isPlayerColliding(Player player){
         Circle circle = player.getBounds();
         //check if playerbounds overlap
-        return Intersector.overlaps(player.getBounds(),this.getBounds());
+        boolean overlaps = Intersector.overlaps(player.getBounds(),this.getBounds());
+
+        this.hits = overlaps;
+
+        return overlaps;
     }
+
+    public boolean isNotHits(){
+        return !hits;
+    }
+
+    
 }
